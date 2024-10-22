@@ -30,6 +30,10 @@ export default function Home() {
         },
       });
     });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
   }, []);
 
   return (

@@ -2,52 +2,58 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import gsap from 'gsap';
+import { Progress } from '@/components/ui/progress';
 
 export default function Loading() {
+  const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const tl = gsap.timeline();
-    
-    tl.to('.loading-screen', {
-      yPercent: -100,
-      duration: 0.8,
-      ease: 'power4.inOut',
-      delay: 2,
-      onComplete: () => setIsLoading(false),
-    });
+    const interval = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prevProgress + 1;
+      });
+    }, 20);
 
-    return () => {
-      tl.kill();
-    };
+    return () => clearInterval(interval);
   }, []);
 
-  if (!isLoading) return null;
+  useEffect(() => {
+    if (progress === 100) {
+      setTimeout(() => setIsLoading(false), 500);
+    }
+  }, [progress]);
 
   return (
     <motion.div 
-      className="loading-screen fixed inset-0 z-50 bg-background flex items-center justify-center"
+      className="loading-screen fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center"
       initial={{ opacity: 1 }}
+      animate={isLoading ? { opacity: 1 } : { y: '-100%' }}
+      transition={{ duration: 0.8, ease: 'easeInOut' }}
     >
-      <div className="text-center">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mb-4"
-        >
-          <div className="w-16 h-16 rounded-full border-4 border-primary border-t-transparent animate-spin mx-auto" />
-        </motion.div>
-        <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+      <div className="text-white text-center mb-8">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-lg font-medium"
+          className="text-9xl font-bold mb-4"
         >
-          Loading...
+          {progress}%
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-xl"
+        >
+          ... just a moment and we&apos;re there.
         </motion.p>
       </div>
+      <Progress value={progress} className="w-64" />
     </motion.div>
   );
 }

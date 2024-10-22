@@ -13,7 +13,7 @@ export default function Hero() {
   useEffect(() => {
     const splitTypes = document.querySelectorAll('[data-split]');
     splitTypes.forEach((char) => {
-      new SplitType(char, {
+      new SplitType(char as HTMLElement, {
         types: 'chars,words',
         tagName: 'span',
       });
@@ -40,13 +40,13 @@ export default function Hero() {
           <h1
             ref={heroTextRef}
             data-split
-            className="text-6xl md:text-8xl font-bold leading-tight mb-8"
+            className="text-6xl md:text-8xl font-bold leading-tight mb-8 font-space-grotesk"
           >
             Crafting Digital Experiences Through Code
           </h1>
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl">
             Creative developer passionate about building beautiful, interactive
-            web experiences that push the boundaries of what's possible.
+            web experiences that push the boundaries of what&apos;s possible.
           </p>
           <div className="flex gap-6">
             <Button size="lg" className="gap-2">

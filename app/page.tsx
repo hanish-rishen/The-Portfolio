@@ -6,10 +6,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Nav from '@/components/nav';
 import Loading from '@/components/loading';
 import Hero from '@/components/sections/hero';
-import Work from '@/components/sections/work';
 import About from '@/components/sections/about';
+import Skills from '@/components/sections/skills';
 import Contact from '@/components/sections/contact';
 import Footer from '@/components/footer';
+import Projects from '@/components/sections/projects';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,8 +24,8 @@ export default function Home() {
         duration: 1,
         scrollTrigger: {
           trigger: element,
-          start: 'top 80%',
-          end: 'bottom 20%',
+          start: 'top bottom',
+          end: 'bottom top',
           toggleActions: 'play none none reverse',
         },
       });
@@ -34,11 +35,12 @@ export default function Home() {
   return (
     <>
       <Loading />
-      <main className="min-h-screen">
+      <main className="flex flex-col min-h-screen overflow-x-hidden">
         <Nav />
         <Hero />
-        <Work />
+        <Projects />
         <About />
+        <Skills />
         <Contact />
         <Footer />
       </main>
